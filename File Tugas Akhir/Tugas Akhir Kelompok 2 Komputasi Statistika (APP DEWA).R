@@ -267,9 +267,28 @@ ui <- dashboardPage(skin = "blue",
                         ),
                         
                         # --- Tab DMA ---
-                        tabItem(tabName = "DMA",
-
-                          
+                        tabItem(
+                          tabName = "DMA",
+                          fluidRow(
+                            box(
+                              title = "Pengaturan Analisis Double Moving Average (DMA)", width = 12, solidHeader = TRUE, status = "primary",
+                              selectInput("dma_variable", "Pilih Variabel yang Akan Diramal:", choices = NULL),
+                              uiOutput("dma_slider_ui"),
+                              actionButton("run_dma", "Jalankan Analisis", icon = icon("play"), class = "btn-success")
+                            )
+                          ),
+                          fluidRow(
+                            box(
+                              title = "Hasil Analisis DMA", width = 12, solidHeader = TRUE, status = "info",
+                              tabsetPanel(
+                                type = "tabs",
+                                tabPanel("Plot", icon = icon("chart-line"), plotOutput("dma_plot_output", height = "500px")),
+                                tabPanel("Detail Model", icon = icon("info-circle"), verbatimTextOutput("dma_detail_output")),
+                                tabPanel("Perbandingan Data", icon = icon("exchange-alt"), DTOutput("dma_comparison_table")),
+                                tabPanel("Hasil Ramalan", icon = icon("list-ol"), DTOutput("dma_forecast_table"))
+                              )
+                            )
+                          )
                         ),
                         
                         # --- Tab SES, HES, HwES ---
