@@ -262,8 +262,26 @@ ui <- dashboardPage(skin = "blue",
                         
                         # --- Tab SMA ---
                         tabItem(tabName = "SMA",
-
-                                
+                                 fluidRow(
+                                  box(
+                                    title = "Pengaturan Analisis Single Moving Average (SMA)", width = 12, solidHeader = TRUE, status = "primary",
+                                    selectInput("sma_variable", "Pilih Variabel yang Akan Diramal:", choices = NULL),
+                                    uiOutput("sma_slider_ui"),
+                                    actionButton("run_sma", "Jalankan Analisis", icon = icon("play"), class = "btn-success")
+                                  )
+                                ),
+                                fluidRow(
+                                  box(
+                                    title = "Hasil Analisis SMA", width = 12, solidHeader = TRUE, status = "info",
+                                    tabsetPanel(
+                                      type = "tabs",
+                                      tabPanel("Plot", icon = icon("chart-line"), plotOutput("sma_plot_output", height = "500px")),
+                                      tabPanel("Detail Model", icon = icon("info-circle"), verbatimTextOutput("sma_detail_output")),
+                                      tabPanel("Perbandingan Data", icon = icon("exchange-alt"), DTOutput("sma_comparison_table")),
+                                      tabPanel("Hasil Ramalan", icon = icon("list-ol"), DTOutput("sma_forecast_table"))
+                                    )
+                                  )
+                                )
                         ),
                         
                         # --- Tab DMA ---
@@ -619,8 +637,47 @@ server <- function(input, output, session) {
   
   # --- BAGIAN PERAMALAN ---
   # SMA
+   output$sma_slider_ui <- renderUI({
+    req(processed_data(), input$sma_variable)
+    data_list <- get_ts_and_dates(input$sma_variable)
+    max_order <- min(length(data_list$ts_object) - 1, 20)
+    tagList(
+      sliderInput("sma_order", "Pilih Orde (n):", min = 2, max = max_order, value = min(3, max_order), step = 1),
+      numericInput("sma_forecast_period", "Periode Ramalan ke Depan (h):", value = 12, min = 1, step = 1)
+    )
+  })
+  sma_results <- eventReactive(input$run_sma, {
+    req(input$sma_order, input$sma_forecast_period)
+    data_list <- get_ts_and_dates(input$sma_variable)
+    ts_data <- data_list$ts_object
+    n_order <- input$sma_order
+    h_period <- input$sma_forecast_period
+    validate(need(length(ts_data) > n_order, "Jumlah data harus lebih besar dari orde (n)."))
+    model <- list(
+      method = paste("Single Moving Average (n=", n_order, ")"),
+      x = ts_data,
+      fitted = TTR::SMA(ts_data, n = n_order),
+      mean = ts(rep(mean(tail(ts_data, n = n_order)), h_period), start = end(ts_data)[1] + 1)
+    )
+    model$residuals <- model$x - model$fitted
+    class(model) <- "forecast"
+    return(list(forecast = model, accuracy = accuracy(model), dates = data_list$dates))
+  })
+  output$sma_plot_output <- renderPlot({
+    result <- sma_results()
+    autoplot(result$forecast$x, series="Data Asli") + 
+      autolayer(result$forecast$fitted, series="Nilai Fitted") + 
+      autolayer(result$forecast$mean, series="Ramalan") +
+      labs(title="Peramalan dengan SMA", x="Periode", y="Nilai", color="Legenda") + 
+      theme_minimal()
+  })
+  output$sma_detail_output <- renderPrint({ 
+    result <- sma_results()
+    cat(generate_details_text(result, input_params = list(n_order = input$sma_order))) 
+  })
+  output$sma_comparison_table <- renderDT({ result <- sma_results(); create_comparison_table(result$forecast, result$dates) })
+  output$sma_forecast_table <- renderDT({ result <- sma_results(); create_forecast_table(result$forecast, result$dates, input$sma_forecast_period) })
 
-  
   # DMA
 
   
@@ -639,3 +696,5 @@ server <- function(input, output, session) {
 # BAGIAN 3: MENJALANKAN APLIKASI
 # ===================================================================
 shinyApp(ui = ui, server = server)
+
+                            
