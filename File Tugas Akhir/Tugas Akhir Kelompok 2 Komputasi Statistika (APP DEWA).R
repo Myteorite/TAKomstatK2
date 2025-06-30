@@ -622,7 +622,53 @@ server <- function(input, output, session) {
 
   
   # DMA
-
+  output$dma_slider_ui <- renderUI({
+    req(processed_data(), input$dma_variable)
+    data_list <- get_ts_and_dates(input$dma_variable)
+    max_n <- floor(length(data_list$ts_object) / 2)
+    validate(need(max_n >= 2, "Data tidak cukup panjang untuk orde n >= 2."))
+    tagList(
+      sliderInput("dma_order", "Pilih Orde (n):", min = 2, max = max_n, value = min(3, max_n), step = 1),
+      numericInput("dma_forecast_period", "Periode Ramalan ke Depan (h):", value = 12, min = 1, step = 1)
+    )
+  })
+  dma_results <- eventReactive(input$run_dma, {
+    req(input$dma_order, input$dma_forecast_period)
+    data_list <- get_ts_and_dates(input$dma_variable)
+    ts_data <- data_list$ts_object
+    n_order <- input$dma_order
+    h_period <- input$dma_forecast_period
+    validate(need(length(ts_data) >= 2 * n_order, paste("Data terlalu pendek. Untuk orde", n_order, ", dibutuhkan minimal", 2*n_order, "observasi.")))
+    S_prime <- TTR::SMA(ts_data, n = n_order)
+    S_double <- TTR::SMA(S_prime, n = n_order)
+    a <- 2 * S_prime - S_double
+    b <- (2 / (n_order - 1)) * (S_prime - S_double)
+    fitted_values <- stats::lag(a, k = -1) + stats::lag(b, k = -1)
+    last_valid_index <- tail(which(!is.na(a) & !is.na(b)), 1)
+    validate(need(length(last_valid_index) > 0, "Gagal menghitung komponen DMA. Coba orde (n) yang lebih kecil."))
+    last_a <- a[last_valid_index]
+    last_b <- b[last_valid_index]
+    m <- 1:h_period
+    forecast_values <- last_a + last_b * m
+    dma_forecast_obj <- list(method = paste("Double Moving Average (n=", n_order, ")"), x = ts_data, fitted = fitted_values, mean = ts(forecast_values, start = end(ts_data)[1] + 1), residuals = ts_data - fitted_values)
+    class(dma_forecast_obj) <- "forecast"
+    accuracy_metrics <- accuracy(dma_forecast_obj)
+    return(list(forecast = dma_forecast_obj, accuracy = accuracy_metrics, dates = data_list$dates))
+  })
+  output$dma_plot_output <- renderPlot({
+    result <- dma_results()
+    autoplot(result$forecast$x, series="Data Asli") + 
+      autolayer(result$forecast$fitted, series="Nilai Fitted") + 
+      autolayer(result$forecast$mean, series="Ramalan") +
+      labs(title="Peramalan dengan DMA", x="Periode", y="Nilai", color="Legenda") + 
+      theme_minimal()
+  })
+  output$dma_detail_output <- renderPrint({ 
+    result <- dma_results()
+    cat(generate_details_text(result, input_params = list(n_order = input$dma_order)))
+  })
+  output$dma_comparison_table <- renderDT({ result <- dma_results(); create_comparison_table(result$forecast, result$dates) })
+  output$dma_forecast_table <- renderDT({ result <- dma_results(); create_forecast_table(result$forecast, result$dates, input$dma_forecast_period) })
   
   # SES
 
