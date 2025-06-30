@@ -311,8 +311,21 @@ ui <- dashboardPage(skin = "blue",
                         
                         # --- Tab SES, HES, HwES ---
                         tabItem(tabName = "SES",
-                               
-                                
+                               fluidRow(
+                                  box(title = "Pengaturan Simple Exponential Smoothing", width = 12, solidHeader = TRUE, status = "primary",
+                                      selectInput("ses_variable", "Pilih Variabel:", choices = NULL),
+                                      uiOutput("ses_slider_ui"),
+                                      actionButton("run_ses", "Jalankan Analisis", icon = icon("play"), class = "btn-success")
+                                  ),
+                                  box(title = "Hasil Analisis SES", width = 12, solidHeader = TRUE, status = "info",
+                                      tabsetPanel(
+                                        tabPanel("Plot", icon = icon("chart-line"), plotOutput("ses_plot_output", height="500px")),
+                                        tabPanel("Detail Model", icon = icon("info-circle"), verbatimTextOutput("ses_detail_output")),
+                                        tabPanel("Perbandingan Data", icon = icon("exchange-alt"), DTOutput("ses_comparison_table")),
+                                        tabPanel("Hasil Ramalan", icon = icon("list-ol"), DTOutput("ses_forecast_table"))
+                                      )
+                                  )
+                                )
                         ),
                         tabItem(tabName = "HES",
 
