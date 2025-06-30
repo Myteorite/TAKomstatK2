@@ -328,7 +328,22 @@ ui <- dashboardPage(skin = "blue",
                                 )
                         ),
                         tabItem(tabName = "HES",
-
+                                fluidRow(
+                                  box(title = "Pengaturan Holt's Exponential Smoothing", width = 12, solidHeader = TRUE, status = "primary",
+                                      selectInput("hes_variable", "Pilih Variabel:", choices = NULL),
+                                      uiOutput("hes_slider_ui"),
+                                      actionButton("run_hes", "Jalankan Analisis", icon = icon("play"), class = "btn-success")
+                                  ),
+                                  box(title = "Hasil Analisis HES", width = 12, solidHeader = TRUE, status = "info",
+                                      tabsetPanel(
+                                        tabPanel("Plot", icon = icon("chart-line"), plotOutput("hes_plot_output", height="500px")),
+                                        tabPanel("Detail Model", icon = icon("info-circle"), verbatimTextOutput("hes_detail_output")),
+                                        tabPanel("Perbandingan Data", icon = icon("exchange-alt"), DTOutput("hes_comparison_table")),
+                                        tabPanel("Hasil Ramalan", icon = icon("list-ol"), DTOutput("hes_forecast_table"))
+                                      )
+                                  )
+                                )
+                        ),
                                   
                         ),
                         tabItem(tabName = "HwES",
