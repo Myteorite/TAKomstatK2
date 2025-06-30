@@ -783,7 +783,27 @@ server <- function(input, output, session) {
   output$ses_forecast_table <- renderDT({ result <- ses_results(); create_forecast_table(result$forecast, result$dates, input$ses_forecast_period) })
   
   # HES
-
+  output$hes_slider_ui <- renderUI({ tagList(checkboxInput("hes_auto", "Gunakan Parameter Optimal", value = TRUE), conditionalPanel(condition = "input.hes_auto == false", sliderInput("hes_alpha", "Alpha (α):", min=0, max=1, value=0.2, step=0.01), sliderInput("hes_beta", "Beta (β):", min=0, max=1, value=0.1, step=0.01)), numericInput("hes_forecast_period", "Periode Ramalan (h):", value = 12, min = 1, step = 1)) })
+  hes_results <- eventReactive(input$run_hes, {
+    req(input$hes_forecast_period); data_list <- get_ts_and_dates(input$hes_variable)
+    ts_data <- data_list$ts_object
+    if (input$hes_auto) { model <- holt(ts_data, h = input$hes_forecast_period) } else { req(input$hes_alpha, input$hes_beta); model <- holt(ts_data, alpha = input$hes_alpha, beta = input$hes_beta, h = input$hes_forecast_period) }
+    return(list(forecast = model, accuracy = accuracy(model), dates = data_list$dates))
+  })
+  output$hes_plot_output <- renderPlot({
+    result <- hes_results()
+    autoplot(result$forecast$x, series="Data Asli") + 
+      autolayer(result$forecast$fitted, series="Nilai Fitted") + 
+      autolayer(result$forecast, series="Ramalan", PI=TRUE) +
+      labs(title="Peramalan dengan Holt's", x="Periode", y="Nilai", color="Legenda") + 
+      theme_minimal()
+  })
+  output$hes_detail_output <- renderPrint({ 
+    result <- hes_results()
+    cat(generate_details_text(result))
+  })
+  output$hes_comparison_table <- renderDT({ result <- hes_results(); create_comparison_table(result$forecast, result$dates) })
+  output$hes_forecast_table <- renderDT({ result <- hes_results(); create_forecast_table(result$forecast, result$dates, input$hes_forecast_period) })
   
   # HwES
 
