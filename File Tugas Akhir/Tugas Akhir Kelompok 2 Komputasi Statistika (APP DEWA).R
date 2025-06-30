@@ -747,7 +747,27 @@ server <- function(input, output, session) {
   output$dma_forecast_table <- renderDT({ result <- dma_results(); create_forecast_table(result$forecast, result$dates, input$dma_forecast_period) })
   
   # SES
-
+  output$ses_slider_ui <- renderUI({ tagList(checkboxInput("ses_auto", "Gunakan Parameter Optimal", value = TRUE), conditionalPanel(condition = "input.ses_auto == false", sliderInput("ses_alpha", "Alpha (α):", min = 0, max = 1, value = 0.2, step = 0.01)), numericInput("ses_forecast_period", "Periode Ramalan (h):", value = 12, min = 1, step = 1)) })
+  ses_results <- eventReactive(input$run_ses, {
+    req(input$ses_forecast_period); data_list <- get_ts_and_dates(input$ses_variable)
+    ts_data <- data_list$ts_object
+    if (input$ses_auto) { model <- ses(ts_data, h = input$ses_forecast_period) } else { req(input$ses_alpha); model <- ses(ts_data, alpha = input$ses_alpha, h = input$ses_forecast_period) }
+    return(list(forecast = model, accuracy = accuracy(model), dates = data_list$dates))
+  })
+  output$ses_plot_output <- renderPlot({
+    result <- ses_results()
+    autoplot(result$forecast$x, series="Data Asli") + 
+      autolayer(result$forecast$fitted, series="Nilai Fitted") + 
+      autolayer(result$forecast, series="Ramalan", PI=TRUE) +
+      labs(title="Peramalan dengan SES", x="Periode", y="Nilai", color="Legenda") + 
+      theme_minimal()
+  })
+  output$ses_detail_output <- renderPrint({ 
+    result <- ses_results()
+    cat(generate_details_text(result)) 
+  })
+  output$ses_comparison_table <- renderDT({ result <- ses_results(); create_comparison_table(result$forecast, result$dates) })
+  output$ses_forecast_table <- renderDT({ result <- ses_results(); create_forecast_table(result$forecast, result$dates, input$ses_forecast_period) })
   
   # HES
 
