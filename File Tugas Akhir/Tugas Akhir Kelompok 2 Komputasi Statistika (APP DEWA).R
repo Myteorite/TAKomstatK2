@@ -344,8 +344,6 @@ ui <- dashboardPage(skin = "blue",
                                   )
                                 )
                         ),
-                                  
-                        ),
                         tabItem(tabName = "HwES",
 
                                 
