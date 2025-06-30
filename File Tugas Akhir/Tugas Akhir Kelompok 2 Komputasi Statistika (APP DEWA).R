@@ -332,8 +332,21 @@ ui <- dashboardPage(skin = "blue",
                                   
                         ),
                         tabItem(tabName = "HwES",
-
-                                
+                                fluidRow(
+                                  box(title = "Pengaturan Holt-Winters' Smoothing", width = 12, solidHeader = TRUE, status = "primary",
+                                      selectInput("hwes_variable", "Pilih Variabel:", choices = NULL),
+                                      uiOutput("hwes_slider_ui"),
+                                      actionButton("run_hwes", "Jalankan Analisis", icon = icon("play"), class = "btn-success")
+                                  ),
+                                  box(title = "Hasil Analisis HwES", width = 12, solidHeader = TRUE, status = "info",
+                                      tabsetPanel(
+                                        tabPanel("Plot", icon = icon("chart-line"), plotOutput("hwes_plot_output", height="500px")),
+                                        tabPanel("Detail Model", icon = icon("info-circle"), verbatimTextOutput("hwes_detail_output")),
+                                        tabPanel("Perbandingan Data", icon = icon("exchange-alt"), DTOutput("hwes_comparison_table")),
+                                        tabPanel("Hasil Ramalan", icon = icon("list-ol"), DTOutput("hwes_forecast_table"))
+                                      )
+                                  )
+                                )
                         )
                       ),
                       div(
@@ -786,7 +799,32 @@ server <- function(input, output, session) {
 
   
   # HwES
-
+  output$hwes_slider_ui <- renderUI({
+    req(processed_data(), input$hwes_variable); data_list <- get_ts_and_dates(input$hwes_variable); max_freq <- floor(length(data_list$ts_object) / 2)
+    tagList(checkboxInput("hwes_auto", "Gunakan Parameter Optimal", value = TRUE), conditionalPanel(condition = "input.hwes_auto == false", sliderInput("hwes_alpha", "Alpha (α):", min=0, max=1, value=0.2, step=0.01), sliderInput("hwes_beta", "Beta (β):", min=0, max=1, value=0.1, step=0.01), sliderInput("hwes_gamma", "Gamma (γ):", min=0, max=1, value=0.1, step=0.01)), sliderInput("hwes_frequency", "Frekuensi Data:", min = 2, max = max(2, max_freq), value = min(12, max(2, max_freq)), step = 1), selectInput("hwes_type", "Tipe Musiman:", choices = c("additive", "multiplicative")), numericInput("hwes_forecast_period", "Periode Ramalan (h):", value = 12, min = 1, step = 1))
+  })
+  hwes_results <- eventReactive(input$run_hwes, {
+    req(input$hwes_forecast_period, input$hwes_frequency, input$hwes_type)
+    data_list <- get_ts_and_dates(input$hwes_variable, frequency = input$hwes_frequency)
+    ts_data <- data_list$ts_object
+    validate(need(length(ts_data) >= 2 * input$hwes_frequency, paste("Dibutuhkan minimal", 2 * input$hwes_frequency, "observasi.")))
+    if (input$hwes_auto) { model <- hw(ts_data, seasonal = input$hwes_type, h = input$hwes_forecast_period) } else { req(input$hwes_alpha, input$hwes_beta, input$hwes_gamma); model <- hw(ts_data, alpha = input$hwes_alpha, beta = input$hwes_beta, gamma = input$hwes_gamma, seasonal = input$hwes_type, h = input$hwes_forecast_period) }
+    return(list(forecast = model, accuracy = accuracy(model), dates = data_list$dates))
+  })
+  output$hwes_plot_output <- renderPlot({
+    result <- hwes_results()
+    autoplot(result$forecast$x, series="Data Asli") + 
+      autolayer(result$forecast$fitted, series="Nilai Fitted") + 
+      autolayer(result$forecast, series="Ramalan", PI=TRUE) +
+      labs(title="Peramalan dengan Holt-Winters", x="Periode", y="Nilai", color="Legenda") + 
+      theme_minimal()
+  })
+  output$hwes_detail_output <- renderPrint({ 
+    result <- hwes_results()
+    cat(generate_details_text(result)) 
+  })
+  output$hwes_comparison_table <- renderDT({ result <- hwes_results(); create_comparison_table(result$forecast, result$dates) })
+  output$hwes_forecast_table <- renderDT({ result <- hwes_results(); create_forecast_table(result$forecast, result$dates, input$hwes_forecast_period) })
   
 }
 
