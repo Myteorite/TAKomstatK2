@@ -54,19 +54,18 @@ ui <- dashboardPage(skin = "blue",
                                   box(
                                     title = "Selamat Datang di Aplikasi Peramalan", width = 12, solidHeader = TRUE, status = "primary",
                                     HTML("
-                                              <h4 style='font-weight:bold;'>Tentang Aplikasi</h4>
-                                              <p>Aplikasi ini dirancang oleh mahasiswa yang sedang menempuh semester 4 di program studi statistika, Fakultas Matematika dan Ilmu Pengetahuan Alam, Universitas Negeri Jakarta. Dilatar belakangi untuk mempermudah dalam melakukan peramalan data deret waktu, Anda dapat mengunggah data Anda sendiri, mengurutkannya berdasarkan tanggal, menganalisisnya, dan membandingkan kinerja berbagai model.</p>
-                                              <h4 style='font-weight:bold;'>Petunjuk Penggunaan</h4>
-                                              <ol>
-                                                <li>Buka menu <strong>Data & Statistik</strong>.</li>
-                                                <li>Unggah file data .csv Anda.</li>
-                                                <li>Pilih <strong>Pemisah Data</strong>, <strong>Kolom Tanggal</strong>, dan <strong>Format Tanggal</strong> yang sesuai dengan file Anda.</li>
-                                                <li>Data Anda akan otomatis terurut berdasarkan tanggal dan siap untuk dianalisis.</li>
-                                                <li>Pilih salah satu <strong>Metode Peramalan</strong> dari menu sidebar.</li>
-                                                <li>Atur parameter dan tekan tombol <strong>'Jalankan Analisis'</strong>.</li>
-                                                <li>Hasil akan disajikan dalam bentuk <strong>Plot</strong>, tabel <strong>Akurasi Model</strong>, dan tabel detail <strong>Perbandingan Data</strong> serta <strong>Hasil Ramalan</strong> yang menyertakan tanggal.</li>
-                                              </ol>"
-                                    )
+                                             <h4 style='font-weight:bold;'>Tentang Aplikasi</h4>
+                                             <p>Aplikasi ini dirancang oleh mahasiswa yang sedang menempuh semester 4 di program studi statistika, Fakultas Matematika dan Ilmu Pengetahuan Alam, Universitas Negeri Jakarta. Dilatar belakangi untuk mempermudah dalam melakukan peramalan data deret waktu, Anda dapat mengunggah data Anda sendiri, mengurutkannya berdasarkan tanggal, menganalisisnya, dan membandingkan kinerja berbagai model.</p>
+                                             <h4 style='font-weight:bold;'>Petunjuk Penggunaan</h4>
+                                             <ol>
+                                               <li>Buka menu <strong>Data & Statistik</strong>.</li>
+                                               <li>Unggah file data .csv Anda.</li>
+                                               <li>Pilih <strong>Pemisah Data</strong>, <strong>Kolom Tanggal</strong>, dan <strong>Format Tanggal</strong> yang sesuai dengan file Anda.</li>
+                                               <li>Data Anda akan otomatis terurut berdasarkan tanggal dan siap untuk dianalisis.</li>
+                                               <li>Pilih salah satu <strong>Metode Peramalan</strong> dari menu sidebar.</li>
+                                               <li>Atur parameter dan tekan tombol <strong>'Jalankan Analisis'</strong>.</li>
+                                               <li>Hasil akan disajikan dalam bentuk <strong>Plot</strong>, tabel <strong>Akurasi Model</strong>, dan tabel detail <strong>Perbandingan Data</strong> serta <strong>Hasil Ramalan</strong> yang menyertakan tanggal.</li>
+                                             </ol>")
                                   ),
                                   box(
                                     title = "TENTANG KAMI", 
@@ -74,32 +73,32 @@ ui <- dashboardPage(skin = "blue",
                                     solidHeader = TRUE, 
                                     status = "primary",
                                     HTML("<h4 style='font-weight:bold;'>Dirancang oleh:</h4>
-                                          <table>
-                                            <tr>
-                                              <td>1. Pandu Tegar Faradian</td>
-                                              <td>&nbsp;- 1314623005</td>
-                                            </tr>
-                                            <tr>
-                                              <td>2. Shabrina Ghaisani Putri</td>
-                                              <td>&nbsp;- 1314623026</td>
-                                            </tr>
-                                            <tr>
-                                              <td>3. Nabilah Rahma Fauziah</td>
-                                              <td>&nbsp;- 1314623034</td>
-                                            </tr>
-                                            <tr>
-                                              <td>4. Rahmad Azmy Rizkiyansyah D.</td>
-                                              <td>&nbsp;- 1314623054</td>
-                                            </tr>
-                                            <tr>
-                                              <td>5. Kelly Audryna Salsabilla</td>
-                                              <td>&nbsp;- 1314623057</td>
-                                            </tr>
-                                            <tr>
-                                              <td>6. Yoshua Fernando Purba</td>
-                                              <td>&nbsp;- 1314623061</td>
-                                            </tr>
-                                          </table>"
+                                         <table>
+                                           <tr>
+                                             <td>1. Pandu Tegar Faradian</td>
+                                             <td>&nbsp;- 1314623005</td>
+                                           </tr>
+                                           <tr>
+                                             <td>2. Shabrina Ghaisani Putri</td>
+                                             <td>&nbsp;- 1314623026</td>
+                                           </tr>
+                                           <tr>
+                                             <td>3. Nabilah Rahma Fauziah</td>
+                                             <td>&nbsp;- 1314623034</td>
+                                           </tr>
+                                           <tr>
+                                             <td>4. Rahmad Azmy Rizkiyansyah D.</td>
+                                             <td>&nbsp;- 1314623054</td>
+                                           </tr>
+                                           <tr>
+                                             <td>5. Kelly Audryna Salsabilla</td>
+                                             <td>&nbsp;- 1314623057</td>
+                                           </tr>
+                                           <tr>
+                                             <td>6. Yoshua Fernando Purba</td>
+                                             <td>&nbsp;- 1314623061</td>
+                                           </tr>
+                                         </table>"
                                     )
                                   )
                                 )
@@ -115,103 +114,103 @@ ui <- dashboardPage(skin = "blue",
                                     status = "primary",
                                     
                                     HTML("
-                                    <h3 style='text-align:center; font-weight:bold;'>Peramalan Data Deret Waktu</h3>
-                                    <p>
-                                      <strong>Data deret waktu (time series)</strong> adalah sekumpulan observasi yang diambil secara berkala dalam periode waktu yang sama. Analisis deret waktu berbeda dari metode statistika lainnya karena memperhitungkan ketergantungan antar observasi dari waktu ke waktu. 
-                                      <strong>Peramalan (forecasting)</strong> merupakan proses untuk memprediksi nilai di masa depan berdasarkan pola data historis, seperti <em>tren</em> dan <em>musiman</em>.
-                                    </p>
-                                    <hr>
-                                  
-                                    <h4 style='text-align:center; font-weight:bold;'>Metode-Metode Peramalan</h4>
+                                     <h3 style='text-align:center; font-weight:bold;'>Peramalan Data Deret Waktu</h3>
+                                     <p>
+                                       <strong>Data deret waktu (time series)</strong> adalah sekumpulan observasi yang diambil secara berkala dalam periode waktu yang sama. Analisis deret waktu berbeda dari metode statistika lainnya karena memperhitungkan ketergantungan antar observasi dari waktu ke waktu. 
+                                       <strong>Peramalan (forecasting)</strong> merupakan proses untuk memprediksi nilai di masa depan berdasarkan pola data historis, seperti <em>tren</em> dan <em>musiman</em>.
+                                     </p>
+                                     <hr>
                                     
-                                    <h5><strong>1. Single Moving Average (SMA)</strong></h5>
-                                    <p>Metode dasar yang menghitung rata-rata dari sejumlah observasi terakhir. Paling cocok untuk data stasioner yang tidak memiliki tren atau pola musiman yang jelas.</p>
-                                    <p style='text-align:center;'>$$ \\hat{y}_{t} = \\frac{1}{n} \\sum_{i=1}^{n} y_{t-i} $$</p>
-                                    <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
-                                      <strong>Keterangan:</strong> 
-                                      \\(\\hat{y}_{t}\\) = Nilai peramalan, 
-                                      \\(y_{t-i}\\) = Nilai aktual pada periode sebelumnya, 
-                                      \\(n\\) = Jumlah periode rata-rata.
-                                    </p>
+                                     <h4 style='text-align:center; font-weight:bold;'>Metode-Metode Peramalan</h4>
                                     
-                                    <h5><strong>2. Double Moving Average (DMA)</strong></h5>
-                                    <p>Merupakan pengembangan dari SMA yang digunakan untuk data yang menunjukkan adanya <strong>pola tren linier</strong>. Metode ini melakukan proses perataan (averaging) sebanyak dua kali untuk menghilangkan lag yang terjadi pada metode SMA.</p>
-                                    <p style='text-align:center;'>Level: $$a_t = 2S'_t - S''_t$$</p>
-                                    <p style='text-align:center;'>Trend: $$b_t = \\frac{2}{n-1} (S'_t - S''_t)$$</p>
-                                    <p style='text-align:center;'>Forecast: $$F_{t+m} = a_t + b_t m$$</p>
-                                    <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
-                                      <strong>Keterangan:</strong> 
-                                      \\(F_{t+m}\\) = Nilai peramalan untuk \\(m\\) periode ke depan,
-                                      \\(a_t\\) = Komponen level, 
-                                      \\(b_t\\) = Komponen tren, 
-                                      \\(S'_t\\) = SMA pertama, 
-                                      \\(S''_t\\) = SMA kedua.
-                                    </p>
+                                     <h5><strong>1. Single Moving Average (SMA)</strong></h5>
+                                     <p>Metode dasar yang menghitung rata-rata dari sejumlah observasi terakhir. Paling cocok untuk data stasioner yang tidak memiliki tren atau pola musiman yang jelas.</p>
+                                     <p style='text-align:center;'>$$ \\hat{y}_{t} = \\frac{1}{n} \\sum_{i=1}^{n} y_{t-i} $$</p>
+                                     <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
+                                       <strong>Keterangan:</strong> 
+                                       \\(\\hat{y}_{t}\\) = Nilai peramalan, 
+                                       \\(y_{t-i}\\) = Nilai aktual pada periode sebelumnya, 
+                                       \\(n\\) = Jumlah periode rata-rata.
+                                     </p>
                                     
-                                    <h5><strong>3. Simple Exponential Smoothing (SES)</strong></h5>
-                                    <p>Metode ini memberikan bobot yang lebih besar pada observasi yang lebih baru secara eksponensial. Seperti SMA, metode ini ideal untuk data tanpa tren atau musiman.</p>
-                                    <p style='text-align:center;'>$$ \\hat{y}_{t+1} = \\alpha y_{t} + (1 - \\alpha)\\hat{y}_{t} $$</p>
-                                    <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
-                                      <strong>Keterangan:</strong> 
-                                      \\(\\hat{y}_{t+1}\\) = Nilai peramalan untuk periode berikutnya, 
-                                      \\(y_{t}\\) = Nilai aktual pada periode t,
-                                      \\(\\alpha\\) = Parameter pemulusan level (0 ≤ α ≤ 1).
-                                    </p>
+                                     <h5><strong>2. Double Moving Average (DMA)</strong></h5>
+                                     <p>Merupakan pengembangan dari SMA yang digunakan untuk data yang menunjukkan adanya <strong>pola tren linier</strong>. Metode ini melakukan proses perataan (averaging) sebanyak dua kali untuk menghilangkan lag yang terjadi pada metode SMA.</p>
+                                     <p style='text-align:center;'>Level: $$a_t = 2S'_t - S''_t$$</p>
+                                     <p style='text-align:center;'>Trend: $$b_t = \\frac{2}{n-1} (S'_t - S''_t)$$</p>
+                                     <p style='text-align:center;'>Forecast: $$F_{t+m} = a_t + b_t m$$</p>
+                                     <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
+                                       <strong>Keterangan:</strong> 
+                                       \\(F_{t+m}\\) = Nilai peramalan untuk \\(m\\) periode ke depan,
+                                       \\(a_t\\) = Komponen level, 
+                                       \\(b_t\\) = Komponen tren, 
+                                       \\(S'_t\\) = SMA pertama, 
+                                       \\(S''_t\\) = SMA kedua.
+                                     </p>
                                     
-                                    <h5><strong>4. Holt's Exponential Smoothing</strong></h5>
-                                    <p>Merupakan pengembangan dari SES yang dirancang khusus untuk data yang menunjukkan adanya <strong>pola tren</strong>, tetapi tanpa komponen musiman.</p>
-                                    <p style='text-align:center;'>Level: $$\\ell_{t} = \\alpha y_{t} + (1 - \\alpha)(\\ell_{t-1} + b_{t-1})$$</p>
-                                    <p style='text-align:center;'>Trend: $$b_{t} = \\beta(\\ell_{t} - \\ell_{t-1}) + (1 - \\beta)b_{t-1}$$</p>
-                                    <p style='text-align:center;'>Forecast: $$\\hat{y}_{t+h} = \\ell_{t} + hb_{t}$$</p>
-                                    <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
-                                      <strong>Keterangan:</strong> 
-                                      \\(\\ell_{t}\\) = Estimasi level, 
-                                      \\(b_{t}\\) = Estimasi tren,
-                                      \\(\\beta\\) = Parameter pemulusan tren (0 ≤ β ≤ 1),
-                                      \\(h\\) = Jumlah periode peramalan ke depan.
-                                    </p>
+                                     <h5><strong>3. Simple Exponential Smoothing (SES)</strong></h5>
+                                     <p>Metode ini memberikan bobot yang lebih besar pada observasi yang lebih baru secara eksponensial. Seperti SMA, metode ini ideal untuk data tanpa tren atau musiman.</p>
+                                     <p style='text-align:center;'>$$ \\hat{y}_{t+1} = \\alpha y_{t} + (1 - \\alpha)\\hat{y}_{t} $$</p>
+                                     <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
+                                       <strong>Keterangan:</strong> 
+                                       \\(\\hat{y}_{t+1}\\) = Nilai peramalan untuk periode berikutnya, 
+                                       \\(y_{t}\\) = Nilai aktual pada periode t,
+                                       \\(\\alpha\\) = Parameter pemulusan level (0 ≤ α ≤ 1).
+                                     </p>
                                     
-                                    <h5><strong>5. Holt-Winters' Exponential Smoothing</strong></h5>
-                                    <p>Merupakan ekstensi lebih lanjut yang mampu menangani data dengan <strong>pola tren dan musiman</strong> secara bersamaan, sehingga menjadi salah satu metode yang paling komprehensif.</p>
-                                    <p style='text-align:center;'>Level: $$\\ell_{t} = \\alpha(y_{t} - s_{t-m}) + (1 - \\alpha)(\\ell_{t-1} + b_{t-1})$$</p>
-                                    <p style='text-align:center;'>Trend: $$b_{t} = \\beta(\\ell_{t} - \\ell_{t-1}) + (1 - \\beta)b_{t-1}$$</p>
-                                    <p style='text-align:center;'>Seasonality: $$s_{t} = \\gamma(y_{t} - \\ell_{t}) + (1 - \\gamma)s_{t-m}$$</p>
-                                    <p style='text-align:center;'>Forecast: $$\\hat{y}_{t+h} = \\ell_{t} + hb_{t} + s_{t-m+h}$$</p>
-                                    <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
-                                      <strong>Keterangan:</strong> 
-                                      \\(s_{t}\\) = Komponen musiman, 
-                                      \\(\\gamma\\) = Parameter pemulusan musiman (0 ≤ γ ≤ 1),
-                                      \\(m\\) = Panjang satu periode musiman.
-                                    </p>
-                                    <hr>
-                                  
-                                    <h4 style='text-align:center; font-weight:bold;'>Ukuran Evaluasi Model (Indikator Error)</h4>
-                                    <p>Setelah membuat model, performanya dievaluasi menggunakan metrik error yang mengukur selisih antara nilai aktual (\\(y_t\\)) dengan nilai peramalan (\\(\\hat{y}_t\\)). Semakin kecil nilai error, semakin akurat model tersebut.</p>
+                                     <h5><strong>4. Holt's Exponential Smoothing</strong></h5>
+                                     <p>Merupakan pengembangan dari SES yang dirancang khusus untuk data yang menunjukkan adanya <strong>pola tren</strong>, tetapi tanpa komponen musiman.</p>
+                                     <p style='text-align:center;'>Level: $$\\ell_{t} = \\alpha y_{t} + (1 - \\alpha)(\\ell_{t-1} + b_{t-1})$$</p>
+                                     <p style='text-align:center;'>Trend: $$b_{t} = \\beta(\\ell_{t} - \\ell_{t-1}) + (1 - \\beta)b_{t-1}$$</p>
+                                     <p style='text-align:center;'>Forecast: $$\\hat{y}_{t+h} = \\ell_{t} + hb_{t}$$</p>
+                                     <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
+                                       <strong>Keterangan:</strong> 
+                                       \\(\\ell_{t}\\) = Estimasi level, 
+                                       \\(b_{t}\\) = Estimasi tren,
+                                       \\(\\beta\\) = Parameter pemulusan tren (0 ≤ β ≤ 1),
+                                       \\(h\\) = Jumlah periode peramalan ke depan.
+                                     </p>
                                     
-                                    <h5><strong>1. Mean Squared Error (MSE)</strong></h5>
-                                    <p style='text-align:center;'>$$MSE = \\frac{1}{n} \\sum_{t=1}^{n} (y_t - \\hat{y}_t)^2$$</p>
+                                     <h5><strong>5. Holt-Winters' Exponential Smoothing</strong></h5>
+                                     <p>Merupakan ekstensi lebih lanjut yang mampu menangani data dengan <strong>pola tren dan musiman</strong> secara bersamaan, sehingga menjadi salah satu metode yang paling komprehensif.</p>
+                                     <p style='text-align:center;'>Level: $$\\ell_{t} = \\alpha(y_{t} - s_{t-m}) + (1 - \\alpha)(\\ell_{t-1} + b_{t-1})$$</p>
+                                     <p style='text-align:center;'>Trend: $$b_{t} = \\beta(\\ell_{t} - \\ell_{t-1}) + (1 - \\beta)b_{t-1}$$</p>
+                                     <p style='text-align:center;'>Seasonality: $$s_{t} = \\gamma(y_{t} - \\ell_{t}) + (1 - \\gamma)s_{t-m}$$</p>
+                                     <p style='text-align:center;'>Forecast: $$\\hat{y}_{t+h} = \\ell_{t} + hb_{t} + s_{t-m+h}$$</p>
+                                     <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
+                                       <strong>Keterangan:</strong> 
+                                       \\(s_{t}\\) = Komponen musiman, 
+                                       \\(\\gamma\\) = Parameter pemulusan musiman (0 ≤ γ ≤ 1),
+                                       \\(m\\) = Panjang satu periode musiman.
+                                     </p>
+                                     <hr>
                                     
-                                    <h5><strong>2. Root Mean Squared Error (RMSE)</strong></h5>
-                                    <p style='text-align:center;'>$$RMSE = \\sqrt{\\frac{1}{n} \\sum_{t=1}^{n} (y_t - \\hat{y}_t)^2}$$</p>
-                                  
-                                    <h5><strong>3. Mean Absolute Percentage Error (MAPE)</strong></h5>
-                                    <p style='text-align:center;'>$$MAPE = \\frac{1}{n} \\sum_{t=1}^{n} \\left| \\frac{y_t - \\hat{y}_t}{y_t} \\right| \\times 100\\%$$</p>
-                                    <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
-                                      <strong>Keterangan:</strong> 
-                                      \\(y_t\\) = Nilai aktual pada periode t, 
-                                      \\(\\hat{y}_t\\) = Nilai peramalan pada periode t,
-                                      \\(n\\) = Jumlah total data.
-                                    </p>
-                                    <hr>
-                                  
-                                    <h4 style='text-align:left; font-weight:bold;'>Daftar Pustaka</h4>
-                                    <p style='padding-left: 20px;'>
-                                      Hyndman, R. J., & Athanasopoulos, G. (2021). <i>Forecasting: Principles and practice</i> (3rd ed.). OTexts. https://otexts.com/fpp3/
-                                    </p>
-                                    <p style='padding-left: 20px;'>
-                                      Makridakis, S., Wheelwright, S. C., & Hyndman, R. J. (1998). <i>Forecasting: Methods and applications</i> (3rd ed.). John Wiley & Sons.
-                                    </p>
-                                  ")
+                                     <h4 style='text-align:center; font-weight:bold;'>Ukuran Evaluasi Model (Indikator Error)</h4>
+                                     <p>Setelah membuat model, performanya dievaluasi menggunakan metrik error yang mengukur selisih antara nilai aktual (\\(y_t\\)) dengan nilai peramalan (\\(\\hat{y}_t\\)). Semakin kecil nilai error, semakin akurat model tersebut.</p>
+                                    
+                                     <h5><strong>1. Mean Squared Error (MSE)</strong></h5>
+                                     <p style='text-align:center;'>$$MSE = \\frac{1}{n} \\sum_{t=1}^{n} (y_t - \\hat{y}_t)^2$$</p>
+                                    
+                                     <h5><strong>2. Root Mean Squared Error (RMSE)</strong></h5>
+                                     <p style='text-align:center;'>$$RMSE = \\sqrt{\\frac{1}{n} \\sum_{t=1}^{n} (y_t - \\hat{y}_t)^2}$$</p>
+                                    
+                                     <h5><strong>3. Mean Absolute Percentage Error (MAPE)</strong></h5>
+                                     <p style='text-align:center;'>$$MAPE = \\frac{1}{n} \\sum_{t=1}^{n} \\left| \\frac{y_t - \\hat{y}_t}{y_t} \\right| \\times 100\\%$$</p>
+                                     <p style='font-size: smaller; font-style: italic; margin-left: 20px;'>
+                                       <strong>Keterangan:</strong> 
+                                       \\(y_t\\) = Nilai aktual pada periode t, 
+                                       \\(\\hat{y}_t\\) = Nilai peramalan pada periode t,
+                                       \\(n\\) = Jumlah total data.
+                                     </p>
+                                     <hr>
+                                    
+                                     <h4 style='text-align:left; font-weight:bold;'>Daftar Pustaka</h4>
+                                     <p style='padding-left: 20px;'>
+                                       Hyndman, R. J., & Athanasopoulos, G. (2021). <i>Forecasting: Principles and practice</i> (3rd ed.). OTexts. https://otexts.com/fpp3/
+                                     </p>
+                                     <p style='padding-left: 20px;'>
+                                       Makridakis, S., Wheelwright, S. C., & Hyndman, R. J. (1998). <i>Forecasting: Methods and applications</i> (3rd ed.). John Wiley & Sons.
+                                     </p>
+                                   ")
                                   )
                                 )
                         ),
@@ -263,7 +262,7 @@ ui <- dashboardPage(skin = "blue",
                         
                         # --- Tab SMA ---
                         tabItem(tabName = "SMA",
-                                 fluidRow(
+                                fluidRow(
                                   box(
                                     title = "Pengaturan Analisis Single Moving Average (SMA)", width = 12, solidHeader = TRUE, status = "primary",
                                     selectInput("sma_variable", "Pilih Variabel yang Akan Diramal:", choices = NULL),
@@ -312,7 +311,7 @@ ui <- dashboardPage(skin = "blue",
                         
                         # --- Tab SES, HES, HwES ---
                         tabItem(tabName = "SES",
-                               fluidRow(
+                                fluidRow(
                                   box(title = "Pengaturan Simple Exponential Smoothing", width = 12, solidHeader = TRUE, status = "primary",
                                       selectInput("ses_variable", "Pilih Variabel:", choices = NULL),
                                       uiOutput("ses_slider_ui"),
@@ -526,7 +525,7 @@ server <- function(input, output, session) {
     selected_data <- df[, input$selected_columns, drop = FALSE]
     summary(selected_data)
   })
-
+  
   # --- BAGIAN PLOT & DEKOMPOSISI ---
   output$plot_variable_ui <- renderUI({
     req(processed_data())
@@ -555,10 +554,10 @@ server <- function(input, output, session) {
   output$original_plot_output <- renderPlot({
     data_list <- ts_to_plot_data()
     req(data_list)
-    df_plot <- data.frame(Tanggal = data_list$dates, Nilai = as.numeric(data_list$ts_object))
-    ggplot(df_plot, aes(x = Tanggal, y = Nilai)) +
+    df_plot <- data.frame(Time = data_list$dates, Nilai = as.numeric(data_list$ts_object))
+    ggplot(df_plot, aes(x = Time, y = Nilai)) +
       geom_line(color = "royalblue") +
-      labs(title = paste("Plot Deret Waktu untuk", input$plot_variable), x = "Tanggal", y = "Nilai") +
+      labs(title = paste("Plot Deret Waktu untuk", input$plot_variable), x = date_column_name(), y = "Nilai") +
       theme_minimal()
   })
   
@@ -605,7 +604,7 @@ server <- function(input, output, session) {
     # --- Basic Info ---
     details <- paste(
       "=====================================",
-      "        DETAIL ANALISIS MODEL        ",
+      "       DETAIL ANALISIS MODEL         ",
       "=====================================\n\n",
       "Banyak Data Digunakan:", length(forecast_obj$x), "observasi\n",
       "Metode Peramalan:", forecast_obj$method, "\n"
@@ -656,8 +655,9 @@ server <- function(input, output, session) {
     return(final_text)
   }
   
+  # --- [PERBAIKAN] FUNGSI UNTUK MEMBUAT TABEL PERBANDINGAN ---
   create_comparison_table <- function(result, dates) {
-    req(input$date_format)
+    req(result, dates, input$date_format)
     
     combined_ts <- ts.union(
       Data_Aktual = result$x,
@@ -667,10 +667,23 @@ server <- function(input, output, session) {
     
     df <- as.data.frame(combined_ts)
     
-    if(nrow(df) == length(dates)) {
-      df <- cbind(Tanggal = format(dates, input$date_format), df)
+    # Logika kondisional untuk kolom waktu
+    if (input$date_format == "periode") {
+      # Jika menggunakan periode, 'dates' adalah nomor periode
+      if (length(dates) == nrow(df)) {
+        df <- cbind(Periode = dates, df)
+      } else {
+        df <- cbind(Periode = 1:nrow(df), df)
+        warning("Panjang periode dan data tidak cocok untuk tabel perbandingan.")
+      }
     } else {
-      warning("Panjang tanggal dan data tidak cocok untuk tabel perbandingan.")
+      # Jika menggunakan tanggal asli, format tanggalnya
+      if(nrow(df) == length(dates)) {
+        df <- cbind(Tanggal = format(dates, input$date_format), df)
+      } else {
+        warning("Panjang tanggal dan data tidak cocok untuk tabel perbandingan.")
+        df <- cbind(Index = 1:nrow(df), df) # Fallback
+      }
     }
     
     datatable(df, options = list(scrollX = TRUE, pageLength = 10, searching = FALSE, rownames = FALSE), caption = "Tabel Perbandingan Nilai Aktual vs. Fitted/Hasil Model") %>%
@@ -679,6 +692,8 @@ server <- function(input, output, session) {
   
   detect_interval <- function(dates) {
     if (length(dates) < 2) return("day")
+    # Hanya berlaku untuk objek Date
+    if (!inherits(dates, "Date")) return("day") 
     diffs <- as.numeric(diff(dates))
     median_diff <- median(diffs, na.rm=TRUE)
     
@@ -689,20 +704,39 @@ server <- function(input, output, session) {
     return("day")
   }
   
+  # --- [PERBAIKAN] FUNGSI UNTUK MEMBUAT TABEL RAMALAN ---
   create_forecast_table <- function(result, all_dates, h) {
-    req(input$date_format)
+    req(result, all_dates, h, input$date_format)
     
-    last_date <- tail(all_dates, 1)
-    interval <- detect_interval(all_dates)
+    forecast_values <- as.numeric(result$mean)
     
-    forecast_dates <- seq.Date(from = last_date, by = interval, length.out = h + 1)[-1]
+    # Logika kondisional untuk kolom waktu ramalan
+    if (input$date_format == "periode") {
+      last_period <- tail(all_dates, 1)
+      forecast_periods <- (last_period + 1):(last_period + h)
+      
+      df <- data.frame(
+        Periode_Ramalan = forecast_periods,
+        Nilai_Ramalan = forecast_values
+      )
+      
+    } else {
+      last_date <- tail(all_dates, 1)
+      
+      validate(need(inherits(last_date, "Date"), "Tipe data tanggal tidak valid untuk peramalan. Pastikan format tanggal benar."))
+      
+      interval <- detect_interval(all_dates)
+      
+      forecast_dates <- seq.Date(from = last_date, by = interval, length.out = h + 1)[-1]
+      
+      df <- data.frame(
+        Tanggal_Ramalan = format(forecast_dates, input$date_format),
+        Nilai_Ramalan = forecast_values
+      )
+    }
     
-    df <- data.frame(
-      Tanggal_Ramalan = format(forecast_dates, input$date_format),
-      Nilai_Ramalan = as.numeric(result$mean)
-    )
-    datatable(df, options = list(scrollX = TRUE, pageLength = 10, searching = FALSE), rownames = FALSE, caption = "Tabel Hasil Ramalan untuk Periode Mendatang") %>%
-      formatRound('Nilai_Ramalan', 4)
+    datatable(df, options = list(scrollX = TRUE, pageLength = 10, searching = FALSE, rownames = FALSE), caption = "Tabel Hasil Ramalan untuk Periode Mendatang") %>%
+      formatRound(names(df)[2], 4) # Format kolom kedua (nilai ramalan)
   }
   
   # --- BAGIAN PERAMALAN ---
@@ -875,5 +909,3 @@ server <- function(input, output, session) {
 # BAGIAN 3: MENJALANKAN APLIKASI
 # ===================================================================
 shinyApp(ui = ui, server = server)
-
-                            
