@@ -228,7 +228,8 @@ ui <- dashboardPage(skin = "blue",
                                                               choices = c("dd/mm/yyyy" = "%d/%m/%Y", 
                                                                           "mm/dd/yyyy" = "%m/%d/%Y",
                                                                           "yyyy-mm-dd" = "%Y-%m-%d",
-                                                                          "yyyy/mm/dd" = "%Y/%m/%d")))
+                                                                          "yyyy/mm/dd" = "%Y/%m/%d",
+                                                                          "Periode (1, 2, 3, ...)" = "periode")))
                                       ),
                                       selectInput("number_format", "Format Angka dalam File:",
                                                   choices = c("1.000,00 (Titik ribuan, Koma desimal)" = "id",
@@ -395,7 +396,12 @@ server <- function(input, output, session) {
   output$date_column_ui <- renderUI({
     df <- raw_data()
     req(df)
-    selectInput("date_column", "Pilih Kolom Tanggal:", choices = names(df))
+    
+    if (input$date_format == "periode") {
+      return(NULL)  # Jangan tampilkan apa-apa jika pakai periode
+    } else {
+      selectInput("date_column", "Pilih Kolom Tanggal:", choices = names(df))
+    }
   })
   
   # Membaca data mentah saat file diunggah
@@ -414,20 +420,28 @@ server <- function(input, output, session) {
   # Memproses dan mengurutkan data setelah kolom tanggal dan format dipilih
   observe({
     df <- raw_data()
-    req(df, input$date_column, input$date_format, input$number_format)
+    req(df, input$date_format, input$number_format)
     
     tryCatch({
       temp_df <- df
       
-      # Konversi kolom tanggal
-      temp_df[[input$date_column]] <- as.Date(temp_df[[input$date_column]], format = input$date_format)
-      date_column_name(input$date_column)
-      
-      validate(need(!all(is.na(temp_df[[input$date_column]])), "Format tanggal salah atau kolom tidak berisi tanggal. Silakan periksa kembali."))
+      if (input$date_format == "periode") {
+        # Buat kolom periode otomatis
+        temp_df$Periode <- seq_len(nrow(temp_df))
+        date_column_name("Periode")
+      } else {
+        req(input$date_column)  # Hanya diperlukan jika bukan "periode"
+        
+        # Konversi tanggal
+        temp_df[[input$date_column]] <- as.Date(temp_df[[input$date_column]], format = input$date_format)
+        validate(need(!all(is.na(temp_df[[input$date_column]])), 
+                      "Format tanggal salah atau kolom tidak berisi tanggal."))
+        date_column_name(input$date_column)
+      }
       
       # Proses kolom numerik lainnya
       for (col_name in names(temp_df)) {
-        if (col_name == input$date_column) next
+        if (col_name == date_column_name()) next
         
         col_vector <- temp_df[[col_name]]
         if (input$number_format == "id") {
@@ -443,20 +457,19 @@ server <- function(input, output, session) {
         }
       }
       
-      # Urutkan berdasarkan tanggal dan simpan
+      # Urutkan berdasarkan tanggal atau Periode
       temp_df <- temp_df %>%
-        filter(!is.na(.data[[input$date_column]])) %>%
-        arrange(.data[[input$date_column]])
+        filter(!is.na(.data[[date_column_name()]])) %>%
+        arrange(.data[[date_column_name()]])
       
       processed_data(temp_df)
-      showNotification("Data berhasil diproses dan diurutkan berdasarkan tanggal.", type = "message")
+      showNotification("Data berhasil diproses dan diurutkan berdasarkan waktu/periode.", type = "message")
       
     }, error = function(e) {
       showNotification(paste("Error memproses data:", e$message), type = "error", duration = 10)
       processed_data(NULL)
     })
   })
-  
   
   # Memperbarui pilihan variabel di semua menu peramalan
   observe({
@@ -489,32 +502,31 @@ server <- function(input, output, session) {
     )
     
     ts_object <- ts(clean_df[[variable_name]], frequency = frequency)
-    
     return(list(ts_object = ts_object, dates = clean_df[[date_column_name()]]))
   }
-  
-  
+  # --- OUTPUT: TABEL DATA ---
   output$table <- renderDT({
-    req(processed_data(), input$date_column, input$date_format)
-    display_df <- processed_data()
-    # Format kolom tanggal di tabel utama
-    display_df[[input$date_column]] <- format(display_df[[input$date_column]], input$date_format)
-    datatable(display_df, options = list(scrollX = TRUE, pageLength = 10), rownames = FALSE)
-  })
-  
-  output$kolom_checkbox <- renderUI({
-    req(processed_data())
     df <- processed_data()
-    choices_cols <- names(df)[sapply(df, function(c) is.numeric(c) || inherits(c, "Date"))]
-    validate(need(length(choices_cols) > 0, "Tidak ada kolom numerik atau tanggal untuk diringkas."))
-    checkboxGroupInput("pilih_kolom", "Pilih Kolom:", choices = choices_cols, selected = choices_cols)
+    req(df)
+    datatable(df, options = list(pageLength = 10, scrollX = TRUE))
   })
   
+  # --- OUTPUT: CHECKBOX KOLUMN NUMERIK ---
+  output$kolom_checkbox <- renderUI({
+    df <- processed_data()
+    req(df)
+    numeric_cols <- names(df)[sapply(df, is.numeric)]
+    checkboxGroupInput("selected_columns", "Pilih Kolom untuk Statistik Deskriptif:", choices = numeric_cols, selected = numeric_cols)
+  })
+  
+  # --- OUTPUT: STATISTIK DESKRIPTIF ---
   output$statistik_output <- renderPrint({
-    req(processed_data(), input$pilih_kolom)
-    print(summary(processed_data()[, input$pilih_kolom, drop = FALSE]))
+    df <- processed_data()
+    req(df, input$selected_columns)
+    selected_data <- df[, input$selected_columns, drop = FALSE]
+    summary(selected_data)
   })
-  
+
   # --- BAGIAN PLOT & DEKOMPOSISI ---
   output$plot_variable_ui <- renderUI({
     req(processed_data())
@@ -695,7 +707,7 @@ server <- function(input, output, session) {
   
   # --- BAGIAN PERAMALAN ---
   # SMA
-   output$sma_slider_ui <- renderUI({
+  output$sma_slider_ui <- renderUI({
     req(processed_data(), input$sma_variable)
     data_list <- get_ts_and_dates(input$sma_variable)
     max_order <- min(length(data_list$ts_object) - 1, 20)
@@ -735,7 +747,7 @@ server <- function(input, output, session) {
   })
   output$sma_comparison_table <- renderDT({ result <- sma_results(); create_comparison_table(result$forecast, result$dates) })
   output$sma_forecast_table <- renderDT({ result <- sma_results(); create_forecast_table(result$forecast, result$dates, input$sma_forecast_period) })
-
+  
   # DMA
   output$dma_slider_ui <- renderUI({
     req(processed_data(), input$dma_variable)
@@ -858,9 +870,7 @@ server <- function(input, output, session) {
   })
   output$hwes_comparison_table <- renderDT({ result <- hwes_results(); create_comparison_table(result$forecast, result$dates) })
   output$hwes_forecast_table <- renderDT({ result <- hwes_results(); create_forecast_table(result$forecast, result$dates, input$hwes_forecast_period) })
-  
 }
-
 # ===================================================================
 # BAGIAN 3: MENJALANKAN APLIKASI
 # ===================================================================
